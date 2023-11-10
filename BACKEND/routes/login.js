@@ -1,16 +1,16 @@
 const express = require('express');
-//const { AuthenticateUser } = require('../controllers/login');
-//const client = require('../redis');
+const { AuthenticateUser } = require('../controllers/login');
+const client = require('../redis');
 var router = express.Router();
 
-/*client 
+client 
     .connect()
     .then( () => {
         console.log('connected to redis');
     })
     .catch((e) => {
         console.log(e);
-    });*/
+    });
 
 router.post('/', async (req, res) => {
     try{
@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
         } else if (loginCredentials === 'Server Busy') {
             res.status(200).send('Server Busy');
         } else {
-            res.status(200).json({ token: loginCredentials.token});
+            res.status(200).json({ token: loginCredentials.token });
         }
     } catch (e) {
         console.log(e);
