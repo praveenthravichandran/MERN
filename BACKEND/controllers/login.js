@@ -24,14 +24,14 @@ async function AuthenticateUser(email, password) {
         const validPassword = await bcrypt.compare(password, userCheck.password);
         console.log(validPassword);
         if (validPassword) {
-            const token = jwt.sign({ email }, process.env.login_secret_token)
+            const token = jwt.sign({ email }, process.env.login_Secret_Token)
             const response = {
                 id: userCheck._id,
                 name: userCheck.name,
                 email: userCheck.email,
                 token: token,
                 status: true,
-            };
+            }
             await client.set(`key-${ email }`, JSON.stringify(response))
             await User.findOneAndUpdate({ email: userCheck.email }, { $set: {token: token} }, { new: true });
             return response;
@@ -45,7 +45,7 @@ async function AuthenticateUser(email, password) {
 
 async function AuthorizeUser(token) {
     try {
-        const decodedToken = jwt.verify(token, process.env.login_secret_token);
+        const decodedToken = jwt.verify(token, process.env.login_Secret_Token)
         if (decodedToken) {
             const email = decodedToken.email;
             const auth = await client.get(`key-${ email }`)
